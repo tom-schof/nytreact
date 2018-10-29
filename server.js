@@ -11,8 +11,11 @@ if (process.env.NODE_ENV === "production"){
 };
 app.use(routes);
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact" );
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact", { useNewUrlParser: true },  {useMongoClient: true} );
 
-app.listen(PORT, () => {
-    console.log(`API server now listening on PORT ${PORT}!`);
-});
+
+
+app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
+  

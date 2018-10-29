@@ -2,7 +2,7 @@ const db = require("../models");
 const scrape = require("../scripts/scrape");
 
 module.exports = {
-    scrpaedArticles: (req,res) => {
+    scrapeArticles: (req,res) => {
         return scrape()
         .then( articles => {
             return db.Article.create(articles);
