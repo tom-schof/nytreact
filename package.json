@@ -1,11 +1,9 @@
 {
   "name": "nytreact",
   "version": "1.0.0",
-  "private": true,
-  "proxy": "http://localhost:3001/",
   "description": "",
   "main": "server.js",
-  "homepage": "http://tom-schof.github.io/nytreact",
+  "homepage" : "http://tom-schof.github.io/nytreact",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node server.js",
@@ -13,20 +11,18 @@
     "client": "cd client && npm run start",
     "install": "cd client && yarn install",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-postbuild": "npm run build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^3.6.1",
-    "nodemon": "^1.18.5"
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.4",
-    "if-env": "^1.0.4",
-    "mongoose": "^5.3.7"
+    "express": "^4.16.3",
+    "mongoose": "^5.0.17",
+    "if-env": "^1.0.4"
   }
 }

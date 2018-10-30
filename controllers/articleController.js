@@ -21,5 +21,7 @@ module.exports = {
         .then(dbArticle => {
             res.json(dbArticle);
         });
-    }
+    },
+
+   
 };

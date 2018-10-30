@@ -1,36 +1,41 @@
 import React, { Component } from "react";
-import DeleteBtn from "../../components/DeleteBtn";
+import SaveBtn from "../../components/saveBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, FormBtn } from "../../components/Form";
+
 
 class Home extends Component {
   state = {
     articles: [],
-    article: "",
+    title: "",
+    startYear: "",
+    endYear: "",
     summary: "",
     url: "",
     date: "",
     saved: false
   };
 
-  componentDidMount() {
-    this.loadArticles();
+  searchArticles = (input) => {
+    API.search(input)
+    .then(res => 
+      this.setState({articles: res.data}))
   }
 
   loadArticles = () => {
     API.getArticles()
       .then(res =>
-        this.setState({ article: res.data, url: "", summary: "", date: "",  })
+        this.setState({ articles: res.data, url: "", summary: "", date: "",  })
       )
       .catch(err => console.log(err));
   };
 
-  deleteArticle = id => {
-    API.deleteArticle(id)
+  saveArticle = data => {
+    API.saveArticle(data)
       .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
@@ -57,15 +62,38 @@ class Home extends Component {
 
   render() {
     return (
+      
       <Container fluid>
+     
         <Row>
           <Col size="md-12">
             <Jumbotron>
-              <h1>Articles</h1>
+              <h1>Search</h1>
+              <Input
+               value={this.state.title}
+                onChange={this.handleInputChange}
+                name="title"
+                placeholder="Title (required)"></Input>
+              <Input
+               value={this.state.startYear}
+                onChange={this.handleInputChange}
+                name="start year"
+                placeholder="start year"></Input>
+              <Input
+               value={this.state.endYear}
+               onChange={this.handleInputChange}
+               name="end year"
+               placeholder="end year">
+               </Input>
+              <FormBtn  onClick={() => this.searchArticles()}>Search!</FormBtn>
             </Jumbotron>
-           
           </Col>
-          <Col size="md-6 sm-12">
+        </Row>
+        <Row>
+          <Col size="md-12">
+          <Jumbotron>
+              <h1>Search Results</h1>
+            
           
             {this.state.articles.length ? (
               <List>
@@ -79,13 +107,43 @@ class Home extends Component {
         
                       
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
+                    <SaveBtn onClick={() => this.saveArticle(article._id)} />
                   </ListItem>
                 ))}
               </List>
             ) : (
               <h3>No Results to Display</h3>
             )}
+            </Jumbotron>
+          </Col>
+        </Row>
+        <Row>
+          <Col size="md-12">
+         
+          <Jumbotron>
+          <h1>Saved Articles</h1>
+            
+          
+            {this.state.articles.length ? (
+              <List>
+                {this.state.articles.map(article => (
+                  <ListItem key={article._id}>
+                    <Link to={"/article/" + article._id}>
+                      <strong> {article.article}</strong>
+                      <p>{article.summary}</p>
+                      <p>{article.date}</p>
+                      <p>{article.url}</p>
+        
+                      
+                    </Link>
+                    <SaveBtn onClick={() => this.saveArticle(article._id)} />
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <h3>No Results to Display</h3>
+            )}
+            </Jumbotron>
           </Col>
         </Row>
       </Container>
